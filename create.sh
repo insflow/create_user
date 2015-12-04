@@ -508,3 +508,7 @@ touch $userNameFile
 echo $userName > $userNameFile
 name=`cat user.txt|awk '{printf $0}'`
 ./create_mail_user_SQL.sh $domain  "$name"
+mysql -uroot -pph4561 <<EOF
+	USE vmail;
+	SOURCE /root/iRedMail-0.9.2/tools/output.sql;
+EOF
