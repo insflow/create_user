@@ -1,6 +1,10 @@
-sed -i '92s/${username}/e4561/' '/root/iRedMail-0.9.2/tools/create_mail_user_SQL.sh'
+CURRENT_PATH=`pwd`
 chmod +x create_mail_user_SQL.sh
-domain='topkehu.com'
+domain=`hostname`
+if [ ! $domain ]; then  
+   echo "domain must no null"
+   exit 0
+fi
 userNameFile='user.txt'
 userName='
 Abbot
@@ -504,11 +508,13 @@ Lucas
 Lucia
 Lucius
 '
-touch $userNameFile
+if [ ! -f "$userNameFile" ]; then  
+    touch $userNameFile
+fi  
 echo $userName > $userNameFile
 name=`cat user.txt|awk '{printf $0}'`
 ./create_mail_user_SQL.sh $domain  "$name"
 mysql -uroot -pph4561 <<EOF
 	USE vmail;
-	SOURCE /root/iRedMail-0.9.2/tools/output.sql;
+	SOURCE $CURRENT_PATH/output.sql;
 EOF
